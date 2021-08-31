@@ -1,65 +1,112 @@
-class PlayScene extends Phaser.Scene{
-    constructor(){
-        super('playGame');
+class PlayScene extends Phaser.Scene {
+  constructor() {
+    super("playGame");
+  }
+
+  create() {
+    const { height, width } = this.game.config;
+    this.gameSpeed = 10;
+
+    this.background = this.add
+      .tileSprite(0, 0, config.width, config.height, "background")
+      .setOrigin(0, 0);
+    this.ground = this.add
+      .tileSprite(0, height, width, 26, "ground")
+      .setOrigin(0, 1);
+
+    //Panda Character: Pandy
+    this.pandy = this.physics.add
+      .sprite(0, height, "pandy")
+      .setOrigin(0, 1)
+      .setCollideWorldBounds(true)
+      .setGravityY(5000);
+
+    //Hazard Character: Dog
+    this.hazardDog = this.physics.add
+      .sprite(width, height, "doggy")
+      .setOrigin(0, 1);
+    //   .setCollideWorldBounds(true)
+    //   .setGravityY(5000);
+
+    //set variable for object containing 4 directions, space, and shift key
+    this.cursorkeys = this.input.keyboard.createCursorKeys();
+  }
+
+  //move hazard dog across screen
+  moveDog(dog, speed) {
+    dog.x -= speed;
+    if (dog.x < -config.width) {
+      this.resetDog(dog);
     }
-   
-    create() {
-        this.gameSpeed = 10;
-        const {height, width} = this.game.config;
+  }
+  //move dog back to right of screen
+  resetDog(dog) {
+    dog.x = config.width;
+  }
 
-        // this.background = this.add.image(0, 0, 'background').setOrigin(0, 0).setScale(0.6);
-        // this.background.setOrigin(0,0);
+  initAnims() {
+    this.anims.create({
+      key: "running",
+      frames: this.anims.generateFrameNumbers("runplayer", {
+        start: 0,
+        end: 1,
+      }),
+      frameRate: 6,
+      repeat: -1,
+    });
 
-        this.background = this.add.tileSprite(0, 0, config.width, config.height, 'background').setOrigin(0,0);
-        this.ground = this.add.tileSprite(0, height, width, 26, 'ground').setOrigin(0,1);
+    this.anims.create({
+      key: "hazardDog",
+      frames: this.anims.generateFrameNumbers("rundog", {
+        start: 0,
+        end: 1,
+      }),
+      frameRate: 6,
+      repeat: -1,
+    });
+  }
 
-        //Panda character
-        this.pandy = this.physics.add.sprite(0,height,'pandy').setOrigin(0,1).setCollideWorldBounds(true).setGravityY(5000);     
-      //set variable for object containing 4 directions, space, and shift key
-        this.cursorkeys = this.input.keyboard.createCursorKeys();
+  jumpPandy() {
+    //player jumps with spacebar
+    if (!this.pandy.body.onFloor()) {
+      return;
     }
-   
-
-    initAnims(){
-        this.anims.create({
-            key: 'running',
-            frames: this.anims.generateFrameNumbers('runplayer', {start: 0, end: 1}),
-            frameRate: 6,
-            repeat: -1
-        })
+    if (this.cursorkeys.space.isDown) {
+      this.pandy.setVelocityY(-1600);
+    } else {
+      this.pandy.setVelocityX(0);
     }
+  }
 
-    jumpPandy(){
-        //player jumps with spacebar
-         if(!this.pandy.body.onFloor()) {return;}
-         if(this.cursorkeys.space.isDown){
-            this.pandy.setVelocityY(-1600);
-         } else { 
-            this.pandy.setVelocityX(0)
-            }
-        }     
-        
-        
-    update(){
-        //60 fps runs
-        this.background.tilePositionX += this.gameSpeed;
-        this.ground.tilePositionX += this.gameSpeed;
-        
+  //   placeHazards() {
+  //     const { height, width } = this.game.config;
+  //     const distance = Phaser.Math.Between(600, 900);
+  //     let hazard;
+  //     hazard = this.hazards.create(width + distance, height, "dog");
+  //     hazard.body.offset.y += 10;
+  //     hazard.setImmovable();
+  //   }
 
-        //create run animation
-        this.initAnims();
-        //call to handle player input  
-        this.jumpPandy();
+  update() {
+    //60 fps runs
+    this.background.tilePositionX += this.gameSpeed;
+    this.ground.tilePositionX += this.gameSpeed;
 
-        //run
-        if(this.pandy.body.deltaAbsY() > 0) {
-            this.pandy.anims.stop();
-            this.pandy.setTexture('pandy')
-        } else {
-            this.pandy.play('running', true);
-        }
-    } 
+    //create run animation
+    this.initAnims();
+    //call to handle player input
+    this.jumpPandy();
 
-     
-    
-    } 
+    //run
+    if (this.pandy.body.deltaAbsY() > 0) {
+      this.pandy.anims.stop();
+      this.pandy.setTexture("pandy");
+    } else {
+      this.pandy.play("running", true);
+    }
+    this.hazardDog.play("hazardDog", true);
+
+    //move dog across screen
+    this.moveDog(this.hazardDog, 8);
+  }
+}
