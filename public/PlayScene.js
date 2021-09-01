@@ -19,7 +19,7 @@ class PlayScene extends Phaser.Scene {
 
     //Panda Character: Pandy
     this.pandy = this.physics.add
-      .sprite(0, height, "pandy")
+      .sprite(60, height, "pandy")
       .setOrigin(0, 1)
       .setCollideWorldBounds(true)
       .setGravityY(5000);
@@ -41,8 +41,11 @@ class PlayScene extends Phaser.Scene {
       this
     );
   }
+
   //callback function for player touching hazard
   playerHit(pandy, hazardDog) {
+    this.scene.remove("playGame");
+    this.scene.start("endGame");
     console.log("player hit!");
   }
 
@@ -92,15 +95,6 @@ class PlayScene extends Phaser.Scene {
     }
   }
 
-  //   placeHazards() {
-  //     const { height, width } = this.game.config;
-  //     const distance = Phaser.Math.Between(600, 900);
-  //     let hazard;
-  //     hazard = this.hazards.create(width + distance, height, "dog");
-  //     hazard.body.offset.y += 10;
-  //     hazard.setImmovable();
-  //   }
-
   update() {
     //60 fps runs
     this.background.tilePositionX += this.gameSpeed;
@@ -108,6 +102,7 @@ class PlayScene extends Phaser.Scene {
 
     //create run animation
     this.initAnims();
+
     //call to handle player input
     this.jumpPandy();
 
@@ -121,8 +116,6 @@ class PlayScene extends Phaser.Scene {
     this.hazardDog.play("hazardDog", true);
 
     //move dog across screen
-    this.moveDog(this.hazardDog, 8);
-
-    console.log("scene 2");
+    this.moveDog(this.hazardDog, 9);
   }
 }

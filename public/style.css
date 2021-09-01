@@ -5,15 +5,15 @@
   font-family: sans-serif;
 }
 
-
-.game-container{
+.game-container {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   background-color: black;
-  padding:20px;
+  padding: 20px;
+  height: 100vh;
 }
-h1{
+h1 {
   color: lightblue;
 }
