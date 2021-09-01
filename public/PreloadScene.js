@@ -20,7 +20,38 @@ class PreloadScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.text(20, 20, "loading");
-    this.scene.start("playGame");
+    this.background = this.add
+      .image(0, 0, "background")
+      .setOrigin(0, 0)
+      .setScale(0.6);
+    this.ground = this.add
+      .tileSprite(0, config.height, config.width, 26, "ground")
+      .setOrigin(0, 1);
+
+    this.add.text(280, 350, "Panda Post", {
+      fontSize: "48px",
+      fill: "black",
+      fontStyle: "bold",
+    });
+
+    this.add
+      .text(250, 450, "Press Space to Play!", {
+        fontSize: "32px",
+        fill: "green",
+        fontStyle: "bold",
+      })
+      .setOrigin(0, 0);
+
+    this.cursorkeys = this.input.keyboard.createCursorKeys();
+  }
+  //spacebar to switch scene
+  startGame() {
+    if (this.cursorkeys.space.isDown) {
+      this.scene.start("playGame");
+    }
+  }
+
+  update() {
+    this.startGame();
   }
 }

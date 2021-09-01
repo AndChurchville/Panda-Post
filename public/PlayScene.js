@@ -3,6 +3,9 @@ class PlayScene extends Phaser.Scene {
     super("playGame");
   }
 
+  init() {}
+  preload() {}
+
   create() {
     const { height, width } = this.game.config;
     this.gameSpeed = 10;
@@ -25,11 +28,22 @@ class PlayScene extends Phaser.Scene {
     this.hazardDog = this.physics.add
       .sprite(width, height, "doggy")
       .setOrigin(0, 1);
-    //   .setCollideWorldBounds(true)
-    //   .setGravityY(5000);
 
     //set variable for object containing 4 directions, space, and shift key
     this.cursorkeys = this.input.keyboard.createCursorKeys();
+
+    //Lose Condition: if Pandy touches hazardDog game over man, game over
+    this.physics.add.overlap(
+      this.pandy,
+      this.hazardDog,
+      this.playerHit,
+      null,
+      this
+    );
+  }
+  //callback function for player touching hazard
+  playerHit(pandy, hazardDog) {
+    console.log("player hit!");
   }
 
   //move hazard dog across screen
@@ -108,5 +122,7 @@ class PlayScene extends Phaser.Scene {
 
     //move dog across screen
     this.moveDog(this.hazardDog, 8);
+
+    console.log("scene 2");
   }
 }
