@@ -15,16 +15,28 @@ class GameOver extends Phaser.Scene {
       .tileSprite(0, config.height, config.width, 26, "ground")
       .setOrigin(0, 1);
 
-    this.add.text(config.width / 2, config.height / 2, "Game Over ", {
+    this.add.text(330, config.height / 2, "Game Over ", {
       fontSize: "48px",
       fill: "black",
       fontStyle: "bold",
     });
 
-    this.add.text(200, 300, "Replay!", {
-      fontSize: "48px",
+    this.add.text(330, 400, "Press space to replay", {
+      fontSize: "28px",
       fill: "black",
       fontStyle: "bold",
     });
+    this.cursorkeys = this.input.keyboard.createCursorKeys();
+  }
+
+  //spacebar to replay game
+  replayGame() {
+    if (this.cursorkeys.space.isDown) {
+      this.scene.start("bootGame");
+    }
+  }
+
+  update() {
+    this.replayGame();
   }
 }
