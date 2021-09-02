@@ -1,6 +1,6 @@
-class GameOver extends Phaser.Scene {
+class GameWin extends Phaser.Scene {
   constructor() {
-    super("endGame");
+    super("playerWins");
   }
 
   preload() {}
@@ -17,8 +17,8 @@ class GameOver extends Phaser.Scene {
 
     var mainStyle = {
       font: "bold 62px Arial",
-      fill: "white",
-      backgroundColor: "#9C0011",
+      fill: "black",
+      backgroundColor: "#B8E986",
       padding: { left: 20, right: 20, top: 20, bottom: 20 },
       boundsAlignH: "center",
       boundsAlignV: "middle",
@@ -26,14 +26,14 @@ class GameOver extends Phaser.Scene {
 
     var subStyle = {
       font: "bold 32px Arial",
-      fill: "white",
-      backgroundColor: "#9C0011",
+      fill: "black",
+      backgroundColor: "#B8E986",
       padding: { left: 20, right: 20, top: 20, bottom: 20 },
       boundsAlignH: "center",
       boundsAlignV: "middle",
     };
 
-    this.add.text(240, 250, "Game Over ", mainStyle);
+    this.add.text(240, 250, "You Win!", mainStyle);
 
     this.add.text(250, 410, "Press space to replay", subStyle);
     this.cursorkeys = this.input.keyboard.createCursorKeys();
@@ -42,7 +42,7 @@ class GameOver extends Phaser.Scene {
   //spacebar to replay game
   replayGame() {
     if (this.cursorkeys.space.isDown) {
-      this.scene.start("playGame");
+      this.scene.start("bootGame");
     }
   }
 

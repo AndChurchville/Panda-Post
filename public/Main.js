@@ -5,11 +5,11 @@ var config = {
   width: 800,
   height: 600,
   backgroundColor: 0x000000,
-  scene: [PreloadScene, PlayScene, GameOver],
+  scene: [PreloadScene, PlayScene, GameOver, GameWin],
   physics: {
     default: "arcade",
     arcade: {
-      debug: true,
+      debug: false,
     },
   },
   parent: "maingame",

@@ -44,6 +44,13 @@ class PlayScene extends Phaser.Scene {
       },
     });
 
+    //Add house sprite
+    this.goal = this.physics.add
+      .sprite(width + 25, height, "house")
+      .setOrigin(0, 1)
+      .setScale(1.6)
+      .setSize(20, 20, true);
+
     //set variable for object containing 4 directions, space, and shift key
     this.cursorkeys = this.input.keyboard.createCursorKeys();
 
@@ -55,12 +62,25 @@ class PlayScene extends Phaser.Scene {
       null,
       this
     );
+
+    //Win Condtion: if Pandy touches house player wins the game
+    this.physics.add.collider(
+      this.pandy,
+      this.goal,
+      this.playerHitGoal,
+      null,
+      this
+    );
   }
 
   //callback function for player touching hazard
   //hit by doggy switch to game over scene
   playerHit() {
     this.scene.start("endGame");
+  }
+  //callback function for winning goal
+  playerHitGoal() {
+    this.scene.start("playerWins");
   }
 
   //animations for player and hazard
@@ -97,6 +117,17 @@ class PlayScene extends Phaser.Scene {
       this.pandy.setVelocityX(0);
     }
   }
+  //move goal to the left
+
+  moveGoal(goal, speed) {
+    goal.x -= speed;
+    if (goal.x < -config.width) {
+      this.resetGoal(goal);
+    }
+  }
+  resetGoal(goal) {
+    goal.x = config.width;
+  }
 
   update() {
     //60 fps runs
@@ -116,13 +147,21 @@ class PlayScene extends Phaser.Scene {
     } else {
       this.pandy.play("running", true);
     }
-    //move hazards across screen
 
-    this.hazardGroup.incX(-8);
+    //move hazards across screen
+    this.hazardGroup.incX(-10);
     this.hazardGroup.getChildren().forEach((hazard) => {
       if (hazard.active && hazard.x < -config.width) {
         this.hazardGroup.killAndHide(hazard);
       }
+    });
+    //delay the winning goal for 30 secs
+    this.time.addEvent({
+      delay: 15000,
+      loop: false,
+      callback: () => {
+        this.moveGoal(this.goal, 5);
+      },
     });
   }
 }
