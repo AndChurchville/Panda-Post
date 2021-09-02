@@ -3,12 +3,10 @@ class PlayScene extends Phaser.Scene {
     super("playGame");
   }
 
-  init() {}
-  preload() {}
-
   create() {
     const { height, width } = this.game.config;
     this.gameSpeed = 10;
+    this.hazard, this.hazardGroup;
 
     this.background = this.add
       .tileSprite(0, 0, config.width, config.height, "background")
@@ -24,18 +22,35 @@ class PlayScene extends Phaser.Scene {
       .setCollideWorldBounds(true)
       .setGravityY(5000);
 
-    //Hazard Character: Dog
-    this.hazardDog = this.physics.add
-      .sprite(width, height, "doggy")
-      .setOrigin(0, 1);
+    //create a sprite pool
+    this.hazardGroup = this.physics.add.group({
+      defaultKey: "rundog",
+      maxSize: 10,
+      visible: true,
+      active: false,
+    });
+
+    this.time.addEvent({
+      delay: 1000,
+      loop: true,
+      callback: () => {
+        this.hazardGroup
+          .get(config.width, height)
+          .setActive(true)
+          .setVisible(true)
+          .setOrigin(0, 1)
+          .setSize(10, 10, true)
+          .play("hazardDog", true);
+      },
+    });
 
     //set variable for object containing 4 directions, space, and shift key
     this.cursorkeys = this.input.keyboard.createCursorKeys();
 
     //Lose Condition: if Pandy touches hazardDog game over man, game over
-    this.physics.add.overlap(
+    this.physics.add.collider(
       this.pandy,
-      this.hazardDog,
+      this.hazardGroup,
       this.playerHit,
       null,
       this
@@ -43,24 +58,12 @@ class PlayScene extends Phaser.Scene {
   }
 
   //callback function for player touching hazard
-  playerHit(pandy, hazardDog) {
-    this.scene.remove("playGame");
+  //hit by doggy switch to game over scene
+  playerHit() {
     this.scene.start("endGame");
-    console.log("player hit!");
   }
 
-  //move hazard dog across screen
-  moveDog(dog, speed) {
-    dog.x -= speed;
-    if (dog.x < -config.width) {
-      this.resetDog(dog);
-    }
-  }
-  //move dog back to right of screen
-  resetDog(dog) {
-    dog.x = config.width;
-  }
-
+  //animations for player and hazard
   initAnims() {
     this.anims.create({
       key: "running",
@@ -113,9 +116,13 @@ class PlayScene extends Phaser.Scene {
     } else {
       this.pandy.play("running", true);
     }
-    this.hazardDog.play("hazardDog", true);
+    //move hazards across screen
 
-    //move dog across screen
-    this.moveDog(this.hazardDog, 9);
+    this.hazardGroup.incX(-8);
+    this.hazardGroup.getChildren().forEach((hazard) => {
+      if (hazard.active && hazard.x < -config.width) {
+        this.hazardGroup.killAndHide(hazard);
+      }
+    });
   }
 }

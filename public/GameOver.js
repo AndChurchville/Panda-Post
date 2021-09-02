@@ -32,7 +32,7 @@ class GameOver extends Phaser.Scene {
   //spacebar to replay game
   replayGame() {
     if (this.cursorkeys.space.isDown) {
-      this.scene.start("bootGame");
+      this.scene.start("playGame");
     }
   }
 

@@ -29,14 +29,13 @@ class PreloadScene extends Phaser.Scene {
       .tileSprite(0, config.height, config.width, 26, "ground")
       .setOrigin(0, 1);
 
-    this.add.image(300, 250, "logo").setOrigin(0, 0).setScale(1.5);
-    // this.add
-    //   .text(280, 250, "Panda Post", {
-    //     fontSize: "48px",
-    //     fill: "black",
-    //     fontStyle: "bold",
-    //   })
-    //   .setOrigin(0, 0);
+    this.add
+      .text(280, 250, "Panda Post", {
+        fontSize: "48px",
+        fill: "black",
+        fontStyle: "bold",
+      })
+      .setOrigin(0, 0);
 
     this.add
       .text(250, 450, "Press Space to Play!", {
