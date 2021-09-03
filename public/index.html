@@ -4,23 +4,53 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Carter+One&family=Open+Sans:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
 
     <link rel="stylesheet" href="style.css" />
     <title>Panda Post</title>
   </head>
 
   <body>
-    <div class="game-container">
-      <h1>Panda Post</h1>
-      <div id="maingame"></div>
+    <div class="container">
+      <div class="header"><h1>Panda Post</h1></div>
+
+     
+    
+      <section class='game-info'> 
+         <p>Help Postal Carrier Pandy deliver the mail and avoid dogs!</p>
+        <p>
+          Reach the house to win. Dont get bit by the dogs or you lose the game!
+        </p>
+        <h2>The Game</h2> 
+        <img src='/public/assets/images/game-screenshot.png' width="610" height="465"> 
+         <a href="/public/game.html" class="play-btn">Play Panda Post</a>
+      
+      </section>
+
+      <section class="tech-info">
+        <h2>Background</h2>
+        <p>Built with JavaScript and Phaser3 game framework</p>
+        <p>Developed for Mintbean Hiring Hackathon</p>
+        
+      </section>
+
+      <section class="dev-info">
+        <h2>Meet the Engineer</h2>
+        <h3>Andrea Churchville</h3>
+        <img src=""
+        <ul class="social-links">
+          <li><a href="https://www.andreachurchville.com/">Portfolio</a></li>
+          <li><a href="https://github.com/AndChurchville">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/andchurchville/">LinkedIn</a></li>
+          <li><a href="https://twitter.com/AndChurchville">Twitter</a></li>
+        </ul>
+        <h5>Credit: Ingame and site background by <a href="https://digitalmoons.itch.io/pixel-skies-demo">Digital Moons</a></h3>
+      </section>
     </div>
   </body>
-
-  <script type="text/javascript" src="phaser.min.js"></script>
-  <script type="text/javascript" src="PreloadScene.js"></script>
-  <script type="text/javascript" src="PlayScene.js"></script>
-  <script type="text/javascript" src="GameOver.js"></script>
-  <script type="text/javascript" src="GameWin.js"></script>
-
-  <script type="text/javascript" src="Main.js"></script>
 </html>
